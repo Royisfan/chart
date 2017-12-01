@@ -11,6 +11,8 @@ class Example(QWidget):
 
         self.initUI()
         self.center()
+        self.show_origin_data()
+        self.show_changed_data()
 
     def initUI(self):
 
@@ -22,11 +24,12 @@ class Example(QWidget):
         btn_show_origin_data = QPushButton('显示原始数据', self)
         btn_show_origin_data.resize(200, 20)
         btn_show_origin_data.move(230, 20)
-        btn_show_origin_data.clicked.connect(self.show_data)
+        btn_show_origin_data.clicked.connect(self.show_origin_data)
 
         btn_show_changed_data = QPushButton('显示计算后的数据', self)
         btn_show_changed_data.resize(200, 20)
         btn_show_changed_data.move(440, 20)
+        btn_show_changed_data.clicked.connect(self.show_changed_data)
 
         btn_multiply_x = QPushButton('对x轴做扩展', self)
         btn_multiply_x.resize(200, 20)
@@ -72,13 +75,19 @@ class Example(QWidget):
                                                 "All Files (*);;Text Files (*.txt)")  # 设置文件扩展名过滤
         Global_list.FILE_PATH = file_path  #使用全局变量存储打开的文件路径
 
-    def show_data(self):
+
+    def show_origin_data(self):
         file_path = Global_list.FILE_PATH  #获取路径名
         data = read_file(file_path)
         for i in range(len(data)):
-            data_data = int(data[i], 2)  #将二进制数转化成十进制， 从0到65535
+            Global_list.DATA[i] = int(data[i], 2)  #将二进制数转化成十进制， 从0到65535
+            print(Global_list.DATA[i])
 
-        print(data_data)
+    def show_changed_data(self):
+        data = Global_list.DATA
+        for i in range(len(data)):
+            data[i]+= 1000
+            print(data[i])
 
 
 if __name__ == '__main__':

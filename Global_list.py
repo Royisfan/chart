@@ -1,1 +1,2 @@
 FILE_PATH = ''
+DATA = {}
