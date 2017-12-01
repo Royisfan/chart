@@ -11,8 +11,6 @@ class Example(QWidget):
 
         self.initUI()
         self.center()
-        self.show_origin_data()
-        self.show_changed_data()
 
     def initUI(self):
 
