@@ -32,6 +32,7 @@ class Example(QWidget):
         btn_multiply_x = QPushButton('对x轴做扩展', self)
         btn_multiply_x.resize(200, 20)
         btn_multiply_x.move(20, 50)
+        btn_multiply_x.clicked.connect(self.multiply_x)
 
         btn_devide_x = QPushButton('对x轴做压缩', self)
         btn_devide_x.resize(200, 20)
@@ -73,7 +74,6 @@ class Example(QWidget):
                                                 "All Files (*);;Text Files (*.txt)")  # 设置文件扩展名过滤
         Global_list.FILE_PATH = file_path  #使用全局变量存储打开的文件路径
 
-
     def show_origin_data(self):
         file_path = Global_list.FILE_PATH  #获取路径名
         data = read_file(file_path)
@@ -82,10 +82,20 @@ class Example(QWidget):
             print(Global_list.DATA[i])
 
     def show_changed_data(self):
+        print(Global_list.DATA)
         data = Global_list.DATA
         for i in range(len(data)):
-            data[i]+= 1000
+            data[i] += 1000
             print(data[i])
+
+    def multiply_x(self):
+        data = Global_list.DATA
+        changed_data = {}
+        for i in range(len(data)):
+            changed_data[2*i] = data[i]
+            print(changed_data)
+
+
 
 
 if __name__ == '__main__':
