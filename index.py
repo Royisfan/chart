@@ -1,8 +1,17 @@
 import sys
 import Global_list
-from Openfile import read_file
-from PyQt5.QtWidgets import *
 
+import  matplotlib
+matplotlib.use("Qt5Agg")
+
+from Openfile import read_file
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import *
+from PyQt5 import QtWidgets
+
+from numpy import arange, sin, pi
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 class Example(QWidget):
 
@@ -14,7 +23,7 @@ class Example(QWidget):
 
     def initUI(self):
 
-        btn_open_file = QPushButton('读取文件', self)
+        btn_open_file = QPushButton(u'读取文件', self)
         btn_open_file.resize(200, 20)
         btn_open_file.move(20, 20)
         btn_open_file.clicked.connect(self.msg)
@@ -30,22 +39,24 @@ class Example(QWidget):
         btn_show_changed_data.clicked.connect(self.show_changed_data)
 
         btn_multiply_x = QPushButton('对x轴做扩展', self)
-        btn_multiply_x.resize(200, 20)
-        btn_multiply_x.move(20, 50)
+        btn_multiply_x.resize(150, 20)
+        btn_multiply_x.move(20, 200)
         btn_multiply_x.clicked.connect(self.multiply_x)
 
         btn_devide_x = QPushButton('对x轴做压缩', self)
-        btn_devide_x.resize(200, 20)
-        btn_devide_x.move(20, 80)
+        btn_devide_x.resize(150, 20)
+        btn_devide_x.move(180, 200)
 
         btn_multiply_y = QPushButton('对y轴做扩展', self)
-        btn_multiply_y.resize(200, 20)
-        btn_multiply_y.move(20, 110)
+        btn_multiply_y.resize(150, 20)
+        btn_multiply_y.move(340, 200)
 
         btn_devide_y = QPushButton('对y轴做压缩', self)
-        btn_devide_y.resize(200, 20)
-        btn_devide_y.move(20, 140)
+        btn_devide_y.resize(150, 20)
+        btn_devide_y.move(500, 200)
 
+
+        '''
         btn_operation_one = QPushButton('操作一', self)
         btn_operation_one.resize(200, 20)
         btn_operation_one.move(20, 190)
@@ -57,11 +68,14 @@ class Example(QWidget):
         btn_operation_three = QPushButton('操作三', self)
         btn_operation_three.resize(200, 20)
         btn_operation_three.move(20, 250)
-
+        '''
         self.resize(650, 500)
         self.center()
-        self.setWindowTitle('Icon')
+        self.setWindowTitle('Chart')
         self.show()
+
+    def compute_initial_figure(self):
+        pass
 
     def center(self):  #将窗口居中显示
         qr = self.frameGeometry()  #获得主窗口的一个矩形特定几何图形

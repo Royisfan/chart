@@ -1,2 +1,2 @@
 FILE_PATH = ''
-DATA = {}
+DATA = []
