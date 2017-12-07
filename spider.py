@@ -1,5 +1,6 @@
 import sys
 import numpy
+import math
 import random
 import Global_list
 from PyQt5 import QtWidgets
@@ -21,25 +22,25 @@ class Window(QtWidgets.QWidget):
         self.btn_show_origin_data.clicked.connect(self.show_origin_data)
 
         self.figure = plt.figure()
-        self.axes = self.figure.add_subplot(211)
-        self.axes2 = self.figure.add_subplot(212)
+        self.axes_origin = self.figure.add_subplot(211)
+        self.axes_change = self.figure.add_subplot(212)
         # We want the axes cleared every time plot() is called
-        self.axes.set_xlim(0, 100)
-        self.axes.set_ylim(0, 65535)
-        self.axes2.set_xlim(0, 100)
-        self.axes2.set_ylim(0, 65535)
+        # self.axes_change.hold(False)
+        self.axes_origin.set_xlim(0, 100)
+        self.axes_origin.set_ylim(0, 65535)
+        self.axes_change.set_xlim(0, 100)
+        self.axes_change.set_ylim(-1,1)
         self.canvas = FigureCanvas(self.figure)
-        self.axes.set_title('Chart')
-
+        self.axes_origin.set_title('Chart')
 
         self.toolbar = NavigationToolbar(self.canvas, self)
         # self.toolbar.hide()
 
         # Just some button
-        self.button1 = QtWidgets.QPushButton('Plot')
+        self.button1 = QtWidgets.QPushButton('正弦')
         self.button1.clicked.connect(self.plot)
 
-        self.button2 = QtWidgets.QPushButton('Zoom')
+        self.button2 = QtWidgets.QPushButton('余弦')
         self.button2.clicked.connect(self.zoom)
 
         self.button3 = QtWidgets.QPushButton('Pan')
@@ -95,13 +96,19 @@ class Window(QtWidgets.QWidget):
             data = read_file(file_path)
             for i in range(len(data)):
                 Global_list.DATA.append(int(data[i], 2))  #将二进制数转化成十进制， 从0到65535
-        self.axes.plot(Global_list.DATA)
+        self.axes_origin.plot(Global_list.DATA)
         self.canvas.draw()
     def home(self):
         self.toolbar.home()
 
     def zoom(self):
-        self.toolbar.zoom()
+        data = Global_list.DATA
+        changedata = []
+        for i in range(len(data)):
+            changedata.append(math.cos(data[i]))
+        self.axes_change.set_xlim(0,100)
+        self.axes_change.plot(changedata)
+        self.canvas.draw()
 
     def pan(self):
         self.toolbar.pan()
@@ -110,7 +117,12 @@ class Window(QtWidgets.QWidget):
         self.toolbar.save_figure()
 
     def plot(self):
-        self.axes2.plot(Global_list.DATA)
+        data = Global_list.DATA
+        changedata = []
+        for i in range(len(data)):
+            changedata.append(math.sin(data[i]))
+        self.axes_change.set_xlim(0, 100)
+        self.axes_change.plot(changedata)
         self.canvas.draw()
 
     def clear(self):
