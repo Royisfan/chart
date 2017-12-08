@@ -1,5 +1,4 @@
 import binascii
-from opfile import msg
 
 
 def read_file(file_path):
