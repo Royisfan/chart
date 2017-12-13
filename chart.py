@@ -82,12 +82,14 @@ class Window(QtWidgets.QWidget):
 
     def show_origin_data(self):
         file_path = Global_list.FILE_PATH  # 获取路径名
+        Global_list.DATA = []  # 每次显示新读取的文件数据前，清空数据列表里的内容
         if not file_path:
             print("未打开文件")
         else:
             data = read_file(file_path)  # 获取文件数据
             for i in range(len(data)):
-                Global_list.DATA.append(int(data[i], 2))  # 将二进制数转化成十进制， 从0到65535
+                Global_list.DATA.append(data[i])  #将数据添加到全局变量中
+        self.clean_origin_chart()
         self.axes_origin.plot(Global_list.DATA)
         self.canvas.draw()
 
@@ -99,7 +101,7 @@ class Window(QtWidgets.QWidget):
         for i in range(len(data)):
             changed_data.append(math.sin(data[i]))
         if changed_data:
-            self.clean()
+            self.clean_changed_chart()
             self.axes_change.plot(changed_data)
             self.canvas.draw()
 
@@ -111,13 +113,19 @@ class Window(QtWidgets.QWidget):
         for i in range(len(data)):
             changed_data.append(math.cos(data[i]))
         if changed_data:
-            self.clean()
+            self.clean_changed_chart()
             self.axes_change.plot(changed_data)
             self.canvas.draw()
 
     # 在每次进行对原始数据的处理显示前，将画布上的数据全部清除
 
-    def clean(self):
+    def clean_origin_chart(self):
+        line_length = len(self.axes_origin.lines)
+        if line_length != 0:
+            for i in range(line_length):
+                self.axes_origin.lines.remove(self.axes_origin.lines[i])
+
+    def clean_changed_chart(self):
         line_length = len(self.axes_change.lines)
         if line_length != 0:
             for i in range(line_length):
